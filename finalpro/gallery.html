@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>catland ohoy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles2.css">
+    <link rel="icon" type="image/png" href="images/catfav.png">
+</head>
+
+<body>
+    
+    <div id="container">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">Info</a></li>
+                <li><a href="breeds.html">Breeds</a></li>
+                <li><a href="catcare.html">Cat Care</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+        <header>
+            <h1>CATS</h1>
+        </header>
+        
+        
+        <main>
+            <h2>THE GALLERY</h2>
+            <hr>
+            <p>Greetings from my adorable cat gallery! This is where you'll discover an enthralling assortment of feline companions that will cheer you up and make you smile. The elegance, grace, and appeal of cats from all walks of life are celebrated in this gallery. Everyone may find something to appreciate here, regardless of how experienced they are with cats or are only now discovering the pleasures of feline companionship.</p>
+            <p>You'll come across a variety of cute cats exhibiting their distinct personalities and peculiarities as you browse this gallery. From carefree kittens lazing in the sun to majestic elderly cats taking pleasure in their surroundings, every picture conveys a tale of affection, friendship, and the unique connection between people and felines. These cats will win your heart whether they're posing, curled up for a nap, or curiously investigating their environment.</p>
+            <p>I firmly think that every cat in my gallery is unique and worthy of affection. We are committed to presenting the diversity and beauty of cats from all around the world because of this. I urge you to browse this collection and become lost in the amazing world of cats, whether you're searching for ideas for your own feline photography or you just want to enjoy the pure delight of gazing at cute cats.</p>
+            <hr>
+
+            <section class="search">
+                <h2>Search for Cat Images</h2>
+                <form id="searchForm">
+                    <input type="text" id="query" name="q" placeholder="Search for cats...">
+                    <button type="submit">Search</button>
+                </form>
+            </section>
+            <section id="results" class="results">
+            </section>
+        </main>
+        <hr>
+        <footer> &copy; typicalweb</footer>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let query = document.getElementById('query').value;
+            searchImages(query);
+        });
+
+        function searchImages(query) {
+            const apiKey = 'AIzaSyDFIXxYLfGgRNps5SfPGTkSB2WO6juRick';
+            const cx = '21703dc4ed23543f7';
+
+            let randomKeyword = getRandomKeyword();
+            const modifiedQuery = `${query} ${randomKeyword}`;
+
+            const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${cx}&searchType=image&q=${modifiedQuery}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    displayImages(data.items);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayImages(images) {
+            let resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
+
+            images.forEach(image => {
+                let imgElement = document.createElement('img');
+                imgElement.src = image.link;
+                imgElement.alt = image.title;
+                resultsContainer.appendChild(imgElement);
+            });
+        }
+
+        function getRandomKeyword() {
+            const catKeywords = ['cat', 'kitten', 'feline', 'tabby'];
+            return catKeywords[Math.floor(Math.random() * catKeywords.length)];
+        }
+    </script>
+
+</body>
+</html>
